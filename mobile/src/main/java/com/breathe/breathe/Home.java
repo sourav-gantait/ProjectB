@@ -42,9 +42,9 @@ public class Home extends AppCompatActivity {
         rlSixtySecs = (RelativeLayout) findViewById(R.id.rlSixtySecs);
 
         tvAppName = (TextView) findViewById(R.id.home_tvAppName);
-//        SpannableString appName = new SpannableString("breathe.");
-//        appName.setSpan(new ForegroundColorSpan(Color.RED), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        tvAppName.setText(appName);
+        SpannableString appName = new SpannableString("breathe.");
+        appName.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvAppName.setText(appName);
 
         tvTimeSpent = (TextView) findViewById(R.id.home_tvTimeSpentDuration);
         tvTimeTotal = (TextView) findViewById(R.id.home_tvTimeTotalDuration);
@@ -95,8 +95,8 @@ public class Home extends AppCompatActivity {
                 String splittedSecs = "";
                 for (int i = 0; i < splittedTimes.length; i++) {
                     splittedHours = String.format("%02d", splittedTimes[0]);
-                    splittedMins = String.format("%02d", splittedTimes[0]);
-                    splittedSecs = String.format("%02d", splittedTimes[1]);
+                    splittedMins = String.format("%02d", splittedTimes[1]);
+                    splittedSecs = String.format("%02d", splittedTimes[2]);
                 }
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putLong("total_duration", storedDuratoin);

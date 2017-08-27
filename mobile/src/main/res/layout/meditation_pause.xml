@@ -4,31 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/colorBlack">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:layout_marginTop="90dp">
 
         <TextView
             android:id="@+id/meditatiionPause_tvPause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_pause"
             android:text="Pause"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/pause_text"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
-
-        <ImageView
-            android:id="@+id/meditationPause_ivDot"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:src="@drawable/ic_dot"
-            android:layout_marginBottom="@dimen/margin_dot"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/meditatiionPause_tvPause"
-            android:layout_toRightOf="@+id/meditatiionPause_tvPause" />
-    </RelativeLayout>
 
 
     <LinearLayout

@@ -23,7 +23,7 @@ public class SplashScreen extends AppCompatActivity {
 
         tvAppName = (TextView)findViewById(R.id.splashScreen_tvAppName);
         SpannableString appName = new SpannableString("breathe.");
-        appName.setSpan(new ForegroundColorSpan(Color.RED), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        appName.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvAppName.setText(appName);
 
         new Handler().postDelayed(new Runnable(){

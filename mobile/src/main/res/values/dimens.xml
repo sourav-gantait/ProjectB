@@ -17,4 +17,7 @@
     <dimen name="time_duration">24dp</dimen>
     <dimen name="time_text">14dp</dimen>
     <dimen name="margin_dot">7dp</dimen>
+    <dimen name="margin_appName">60dp</dimen>
+    <dimen name="margin_appNameTop">100dp</dimen>
+    <dimen name="margin_pause">90dp</dimen>
 </resources>
