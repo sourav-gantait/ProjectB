@@ -8,4 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Base.Widget.AppCompat.Button.Borderless">remind_me_btn</style>
+
 </resources>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:layout_marginTop="90dp">
+
+        <TextView
+            android:id="@+id/meditatiionPause_tvPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pause"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/pause_text"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/meditationPause_ivDot"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:src="@drawable/ic_dot"
+            android:layout_marginBottom="@dimen/margin_dot"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/meditatiionPause_tvPause"
+            android:layout_toRightOf="@+id/meditatiionPause_tvPause" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_low">
+            <TextView
+                android:id="@+id/meditatiionPause_tvTimeSpentDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/time_duration"/>
+            <TextView
+                android:id="@+id/meditatiionPause_tvTimeSpent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/time_spent"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/time_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_xhigh">
+
+            <TextView
+                android:id="@+id/meditatiionPause_tvTimeRemainingDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/time_duration"/>
+            <TextView
+                android:id="@+id/meditatiionPause_tvTimeRemaining"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/time_remaining"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/time_text"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/meditatiionPause_llButtonSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="173dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <Button
+            android:id="@+id/meditatiionPause_btnStop"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="@string/btn_stop"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_border"/>
+        <Button
+            android:id="@+id/meditatiionPause_btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:text="@string/btn_continue"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_border"/>
+    </LinearLayout>
+
+</RelativeLayout>

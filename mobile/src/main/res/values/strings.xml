@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Breathe</string>
+    <string name="focus_msg">Focus on the red dot.\n\nConcentrate on breathing \nand nothing else.</string>
+    <string name="time_spent">TIME SPENT</string>
+    <string name="time_remaining">TIME REMAINING</string>
+    <string name="btn_setmyself">SET MYSELF</string>
+    <string name="btn_random">RANDOM</string>
+    <string name="btn_stop">STOP</string>
+    <string name="btn_continue">CONTINUE</string>
+    <string name="time_total">TOTAL</string>
+
 </resources>

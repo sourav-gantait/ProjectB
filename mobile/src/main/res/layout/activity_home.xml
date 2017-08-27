@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context="com.breathe.breathe.Home">
+
+    <ScrollView
+        android:id="@+id/home_svScrollable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/home_rlAppName"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="@dimen/margin_xxhigh"
+                android:layout_marginTop="100dp">
+
+                <TextView
+                    android:id="@+id/home_tvAppName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="breathe"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="48dp" />
+
+                <ImageView
+                    android:id="@+id/meditationPause_ivDot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/margin_dot"
+                    android:layout_toEndOf="@+id/home_tvAppName"
+                    android:layout_toRightOf="@+id/home_tvAppName"
+                    android:src="@drawable/ic_dot" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/home_llTimes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/home_rlAppName"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_low">
+
+                    <TextView
+                        android:id="@+id/home_tvTimeSpentDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#777776"
+                        android:textSize="@dimen/time_duration" />
+
+                    <TextView
+                        android:id="@+id/home_tvTimeSpent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/time_spent"
+                        android:textColor="#777776"
+                        android:textSize="@dimen/time_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_xhigh">
+
+                    <TextView
+                        android:id="@+id/home_tvTimeTotalDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#777776"
+                        android:textSize="@dimen/time_duration" />
+
+                    <TextView
+                        android:id="@+id/home_tvTimeTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/time_total"
+                        android:textColor="#777776"
+                        android:textSize="@dimen/time_text" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/home_llDurationButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/home_llTimes"
+                android:layout_marginTop="@dimen/margin_xxhigh"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rlFifteenSecs"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="15"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="42dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="seconds"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlThirtySecs"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="30"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="42dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="seconds"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlSixtySecs"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_button">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="60"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="42dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="seconds"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/home_tvRemindMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/home_llButtonSettings"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_xxhigh"
+        android:text="REMIND ME"
+        android:textSize="14dp" />
+
+    <LinearLayout
+        android:id="@+id/home_llButtonSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/home_btnSetMyself"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_border"
+            android:text="SET MYSELF"
+            android:textColor="@color/colorWhite" />
+
+        <Button
+            android:id="@+id/home_btnRandom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_border"
+            android:text="RANDOM"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+</RelativeLayout>

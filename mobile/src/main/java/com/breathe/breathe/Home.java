@@ -105,8 +105,9 @@ public class Home extends AppCompatActivity {
                 tvTimeSpent.setText("00:" + String.format("%02d", result));
                 if (!splittedHours.equals("00") && splittedHours != null) {
                     tvTimeTotal.setText(splittedHours + ":" + splittedMins + ":" + splittedSecs);
+                } else {
+                    tvTimeTotal.setText(splittedMins + ":" + splittedSecs);
                 }
-                tvTimeTotal.setText(splittedMins + ":" + splittedSecs);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
 
