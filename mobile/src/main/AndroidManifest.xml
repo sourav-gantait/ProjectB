@@ -10,7 +10,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".SplashScreen"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,9 +20,18 @@
         </activity>
         <activity
             android:name=".Home"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Meditation"></activity>
+        <activity android:name=".Meditation"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity android:name=".RemindMeAdd"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ReminderList"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

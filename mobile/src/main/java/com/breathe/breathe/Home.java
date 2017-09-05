@@ -12,6 +12,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +32,9 @@ public class Home extends AppCompatActivity {
     TextView tvTimeSpent;
     TextView tvTimeTotal;
 
+    Button btnSetMyself;
+    Button btnRandom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,9 @@ public class Home extends AppCompatActivity {
         rlSixtySecs = (RelativeLayout) findViewById(R.id.rlSixtySecs);
 
         tvAppName = (TextView) findViewById(R.id.home_tvAppName);
+        btnSetMyself = (Button)findViewById(R.id.home_btnSetMyself);
+        btnRandom = (Button)findViewById(R.id.home_btnRandom);
+
         SpannableString appName = new SpannableString("breathe.");
         appName.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvAppName.setText(appName);
@@ -69,6 +76,13 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gotoMedition(60);
+            }
+        });
+
+        btnSetMyself.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Home.this, RemindMeAdd.class));
             }
         });
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_reminder_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    tools:context="com.breathe.breathe.ReminderList">
+
+    <TextView
+        android:id="@+id/reminderList_tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_header"
+        android:gravity="center"
+        android:text="Remind me"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/header_text"
+        android:fontFamily="sans-serif-light"/>
+
+    <TextView
+        android:id="@+id/reminderList_tvNoOfReminders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_dayOfWeek"
+        android:gravity="center"
+        android:text="@string/select_upto_three"
+        android:textColor="@color/colorWhite"
+        android:textSize="18dp" />
+    <View
+        android:id="@+id/reminderList_reminderLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_xhigh"
+        android:background="@color/colorTimeSet"
+        android:layout_below="@+id/reminderList_tvNoOfReminders"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reminderList_reminderLine">
+    <LinearLayout
+        android:id="@+id/reminderList_llList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+    </ScrollView>
+    <TextView
+        android:id="@+id/reminderList_tvNoReminderss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_reminders"
+        android:textColor="@color/colorWhite"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="18sp"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/home_llBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/reminderList_btnHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_border"
+            android:text="Home"
+            android:textColor="@color/colorWhite" />
+
+        <Button
+            android:id="@+id/reminderList_btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_border"
+            android:text="Add"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+</RelativeLayout>

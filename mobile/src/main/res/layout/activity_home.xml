@@ -97,7 +97,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/home_llTimes"
                 android:layout_marginTop="@dimen/margin_xxhigh"
-                android:layout_marginBottom="@dimen/margin_appName"
+                android:layout_marginBottom="@dimen/margin_header"
                 android:orientation="horizontal">
 
                 <RelativeLayout

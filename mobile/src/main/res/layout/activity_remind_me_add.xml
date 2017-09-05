@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_remind_me_add"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    tools:context="com.breathe.breathe.RemindMeAdd">
+
+            <TextView
+                android:id="@+id/remindMe_tvHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_header"
+                android:gravity="center"
+                android:text="Remind me"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/header_text"
+                android:fontFamily="sans-serif-light"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_dayOfWeek"
+                android:gravity="center"
+                android:text="@string/days_Of_week"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <View
+                android:id="@+id/remindMe_viewUpperLine"
+                android:layout_width="match_parent"
+                android:layout_height="2sp"
+                android:layout_marginTop="@dimen/margin_darklineTop"
+                android:background="@color/colorLineDark" />
+
+            <LinearLayout
+                android:id="@+id/remindMe_llWeekdays"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/remindMe_viewUpperLine"
+                android:layout_marginLeft="@dimen/margin_xxhigh"
+                android:layout_marginRight="@dimen/margin_xxhigh"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/remindMe_llDayMon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_day_inactive"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="M"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/days_text" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/remindMe_llDayTue"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_day_inactive"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="T"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/days_text" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/remindMe_llDayWed"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_day_inactive"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="W"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/days_text" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/remindMe_llDayThu"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_day_inactive"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="T"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/days_text" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/remindMe_llDayFri"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_day_inactive"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="F"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/days_text" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/remindMe_llDaySat"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_day_inactive"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="S"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/days_text" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/remindMe_llDaySun"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_day_inactive"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="S"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/days_text" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/remindMe_viewLowerLine"
+                android:layout_width="match_parent"
+                android:layout_height="2sp"
+                android:layout_below="@+id/remindMe_llWeekdays"
+                android:background="@color/colorLineDark" />
+
+            <TextView
+                android:id="@+id/remindMe_tvTimeLbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/remindMe_viewLowerLine"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:gravity="center"
+                android:text="TIME"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/remindMe_rlNumberPickers"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/remindMe_tvTimeLbl"
+                android:layout_marginTop="@dimen/margin_xxhigh"
+                android:orientation="horizontal">
+
+                <NumberPicker
+                    android:id="@+id/remindMe_npSeconds"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:divider="@color/colorWhite"
+                    android:fadeScrollbars="true" />
+
+                <NumberPicker
+                    android:id="@+id/remindMe_npHours"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/remindMe_npSeconds"
+                    android:layout_toRightOf="@+id/remindMe_npSeconds"
+                    android:divider="@color/colorWhite"
+                    android:fadeScrollbars="true" />
+
+                <NumberPicker
+                    android:id="@+id/remindMe_npMinutes"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/remindMe_npHours"
+                    android:layout_toRightOf="@+id/remindMe_npHours"
+                    android:divider="@color/colorWhite"
+                    android:fadeScrollbars="true" />
+
+                <NumberPicker
+                    android:id="@+id/remindMe_npAMorPM"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/remindMe_npMinutes"
+                    android:divider="@color/colorWhite"
+                    android:fadeScrollbars="true" />
+            </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/remindMe_llBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/remindMe_btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_border"
+            android:text="Cancel"
+            android:textColor="@color/colorWhite" />
+
+        <Button
+            android:id="@+id/remindMe_btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_border"
+            android:text="Save"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+</RelativeLayout>
