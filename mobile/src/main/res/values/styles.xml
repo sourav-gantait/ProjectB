@@ -9,5 +9,9 @@
     </style>
 
     <style name="Base.Widget.AppCompat.Button.Borderless">remind_me_btn</style>
-
+    <style name="buttonStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@drawable/btn_border_disable</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

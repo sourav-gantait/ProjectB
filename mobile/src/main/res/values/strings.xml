@@ -8,5 +8,9 @@
     <string name="btn_stop">STOP</string>
     <string name="btn_continue">CONTINUE</string>
     <string name="time_total">TOTAL</string>
+    <string name="remind_me">Remind me</string>
+    <string name="days_Of_week">DAYS OF THE WEEK</string>
+    <string name="select_upto_three">Select up to 3 reminders.</string>
+    <string name="empty_reminders">You have no reminders.</string>
 
 </resources>

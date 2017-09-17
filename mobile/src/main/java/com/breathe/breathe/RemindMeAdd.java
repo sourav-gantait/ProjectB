@@ -1,6 +1,8 @@
 package com.breathe.breathe;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -390,6 +394,9 @@ public class RemindMeAdd extends Activity {
             String json = gson.toJson(dataSet);
             editor.putString(DATA_TAG, json);
             editor.commit();
+            for(int i = 0; i<dataSet.size(); i++){
+                setReminderNotification(dataSet.get(i));
+            }
 
             Intent intent = new Intent(RemindMeAdd.this, ReminderList.class);
             startActivity(intent);
@@ -404,5 +411,66 @@ public class RemindMeAdd extends Activity {
             randomNumber++;
             createRandom(ids, randomNumber);
         }
+    }
+
+    private void setReminderNotification(HashMap<String, String> hashMap){
+
+        String id = hashMap.get("id");
+        String days = hashMap.get("days");
+        String duration = hashMap.get("duration");
+        String hour = hashMap.get("hour");
+        String minutes = hashMap.get("minutes");
+        String timeperiod = hashMap.get("timeperiod");
+
+        String[] daysArray = days.split(",");
+
+        if (daysArray[0].equals("1")){
+            setNotification(2, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+        }
+        if (daysArray[1].equals("1")){
+            setNotification(3, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+        }
+        if (daysArray[2].equals("1")){
+            setNotification(4, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+        }
+        if (daysArray[3].equals("1")){
+            setNotification(5, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+        }
+        if (daysArray[4].equals("1")){
+            setNotification(6, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+        }
+        if (daysArray[5].equals("1")){
+            setNotification(7, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+        }
+        if (daysArray[6].equals("1")){
+            setNotification(1, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+        }
+    }
+
+    private void setNotification(int week, int minutes, int hour, String timeperiod, String duration){
+        Intent myIntent = new Intent(this , AlermNotificationReceiver.class);
+        myIntent.putExtra("duration", duration);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, myIntent, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.DAY_OF_WEEK, week);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.HOUR, hour);
+        if (timeperiod.equals("AM")) {
+            calendar.set(Calendar.AM_PM, Calendar.AM);
+        }else {
+            calendar.set(Calendar.AM_PM, Calendar.PM);
+        }
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Log.e("week==>", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
+        Log.e("week==>", String.valueOf(week));
+        Log.e("hour==>", String.valueOf(calendar.get(Calendar.HOUR)));
+        Log.e("hour==>", String.valueOf(hour));
+
+        Log.e("notification==>", String.valueOf(calendar.getTimeInMillis()));
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7 , pendingIntent);
     }
 }
