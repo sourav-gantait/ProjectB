@@ -54,9 +54,12 @@ public class Meditation extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         final int durationTime = bundle.getInt("duration", 0);
-        if (durationTime == 15 || durationTime == 30 || durationTime == 60) {
+        Log.e("durationTime==>", "hgjh==="+durationTime);
+//        if (durationTime == 15 || durationTime == 30 || durationTime == 60) {
+        if (durationTime != 0) {
             startTimer(durationTime);
         }
+//        }
 
         rlActivityMeditation.setOnClickListener(new View.OnClickListener() {
             @Override

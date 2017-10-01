@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -34,6 +35,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 import static com.breathe.breathe.Home.MyPREFERENCES;
 
@@ -232,6 +234,13 @@ public class RemindMeAdd extends Activity {
             }
         });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         SpannableString remindMe = new SpannableString("Remind me.");
         remindMe.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 9, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvRemindMe.setText(remindMe);
@@ -346,7 +355,7 @@ public class RemindMeAdd extends Activity {
         return false;
     }
 
-    private void addToReminderList(Gson gson, ArrayList<HashMap<String, String>> dataSet, String id, int position) {
+    private void addToReminderList(Gson gson, ArrayList<HashMap<String, String>> alReminder, String id, int position) {
         String dayMon = "0";
         String dayTue = "0";
         String dayWed = "0";
@@ -386,16 +395,16 @@ public class RemindMeAdd extends Activity {
             hashMap.put("minutes", mins);
             hashMap.put("timeperiod", timePeriod);
             if (!editId.equals("") && editId != null) {
-                dataSet.set(position, hashMap);
+                alReminder.set(position, hashMap);
             } else {
-                dataSet.add(hashMap);
+                alReminder.add(hashMap);
             }
             SharedPreferences.Editor editor = sharedpreferences.edit();
-            String json = gson.toJson(dataSet);
+            String json = gson.toJson(alReminder);
             editor.putString(DATA_TAG, json);
             editor.commit();
-            for(int i = 0; i<dataSet.size(); i++){
-                setReminderNotification(dataSet.get(i));
+            for(int i = 0; i<alReminder.size(); i++){
+                setReminderNotification(alReminder.get(i));
             }
 
             Intent intent = new Intent(RemindMeAdd.this, ReminderList.class);
@@ -423,54 +432,63 @@ public class RemindMeAdd extends Activity {
         String timeperiod = hashMap.get("timeperiod");
 
         String[] daysArray = days.split(",");
-
+        Log.e("daysArray==>", daysArray.toString());
         if (daysArray[0].equals("1")){
-            setNotification(2, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+            setNotification(Calendar.MONDAY, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
         }
         if (daysArray[1].equals("1")){
-            setNotification(3, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+            setNotification(Calendar.TUESDAY, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
         }
         if (daysArray[2].equals("1")){
-            setNotification(4, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+            setNotification(Calendar.WEDNESDAY, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
         }
         if (daysArray[3].equals("1")){
-            setNotification(5, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+            setNotification(Calendar.THURSDAY, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
         }
         if (daysArray[4].equals("1")){
-            setNotification(6, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+            setNotification(Calendar.FRIDAY, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
         }
         if (daysArray[5].equals("1")){
-            setNotification(7, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+            setNotification(Calendar.SATURDAY, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
         }
         if (daysArray[6].equals("1")){
-            setNotification(1, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
+            setNotification(Calendar.SUNDAY, Integer.parseInt(minutes), Integer.parseInt(hour), timeperiod, duration);
         }
     }
 
     private void setNotification(int week, int minutes, int hour, String timeperiod, String duration){
-        Intent myIntent = new Intent(this , AlermNotificationReceiver.class);
+        Intent myIntent = new Intent(getApplicationContext() , AlarmNotificationReceiver.class);
         myIntent.putExtra("duration", duration);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, myIntent, 0);
+        Log.e("duration==>", "=="+duration);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 123, myIntent, 0);
 
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getDefault());
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.DAY_OF_WEEK, week);
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.HOUR, hour);
         if (timeperiod.equals("AM")) {
             calendar.set(Calendar.AM_PM, Calendar.AM);
+            Log.e("timeperiod=AM=>", "OK");
         }else {
             calendar.set(Calendar.AM_PM, Calendar.PM);
+            Log.e("timeperiod=PM=>", "OK");
         }
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Log.e("week==>", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
-        Log.e("week==>", String.valueOf(week));
-        Log.e("hour==>", String.valueOf(calendar.get(Calendar.HOUR)));
+//        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        /*Log.e("week==>", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
+        Log.e("week==>", String.valueOf(week));*/
+
         Log.e("hour==>", String.valueOf(hour));
+
+        Log.e("minutes==>", String.valueOf(minutes));
 
         Log.e("notification==>", String.valueOf(calendar.getTimeInMillis()));
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7 , pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7 , pendingIntent);
+//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+//                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 }
