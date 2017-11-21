@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBlack"
@@ -22,25 +23,25 @@
                 android:id="@+id/rowReminder_tvTime"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:fontFamily="sans-serif-light"
                 android:text="06:30 AM"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/row_time"
-                android:fontFamily="sans-serif-light"/>
+                android:textSize="@dimen/row_time" />
 
             <TextView
                 android:id="@+id/rowReminder_tvDuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
                 android:text="60 sec"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/row_duration"
-                android:fontFamily="sans-serif-light" />
+                android:textSize="@dimen/row_duration" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_low"
                 android:layout_marginBottom="@dimen/margin_low"
+                android:layout_marginTop="@dimen/margin_low"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -215,64 +216,80 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <com.breathe.breathe.SwitchButton
+                android:id="@+id/rowReminder_sbActive"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                app:sb_checked="true"
+                app:sb_checked_color="@color/colorRedDot"
+                app:sb_show_indicator="false" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/margin_medium">
+                android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/rowReminder_rlEdit"
-                    android:layout_width="32dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <RelativeLayout
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/circle_edit_delete" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/rowReminder_rlEdit"
+                        android:layout_width="32dp"
+                        android:layout_height="35dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:src="@drawable/ic_mode_edit" />
-                </RelativeLayout>
+                        android:layout_centerVertical="true">
 
-                <RelativeLayout
-                    android:id="@+id/rowReminder_rlDelete"
-                    android:layout_width="32dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
+                        <RelativeLayout
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/circle_edit_delete" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/ic_mode_edit" />
+                    </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:id="@+id/rowReminder_rlDelete"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/circle_edit_delete" />
+                        android:layout_centerVertical="true">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_close" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/circle_edit_delete" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_close" />
+                    </RelativeLayout>
                 </RelativeLayout>
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

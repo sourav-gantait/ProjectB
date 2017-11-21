@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -23,48 +25,33 @@ import java.util.GregorianCalendar;
  */
 
 public class AlarmNotificationReceiver extends BroadcastReceiver {
-    int MID=0;
+    int MID=1;
     private static final int NOTIFICATION = 3456;
     Context context;
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
-        /*final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.drawable.ic_dot);
-        builder.setContentTitle("Time is up");
-        builder.setContentText("SLIMS");
-        builder.setVibrate(new long[] { 0, 200, 100, 200 });
-        final Notification notification = builder.build();
-
-        mNM.notify(NOTIFICATION, notification);*/
-        /*Calendar now = GregorianCalendar.getInstance();
-        Log.e("NotificationReceiver==>", String.valueOf(now.getTime()));
+//        StaticWakeLock.lockOn(context);
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Alarm Manager");
+        wl.acquire();
         String duration = intent.getStringExtra("duration");
-        Notification.Builder mBuilder =
-                new Notification.Builder(context)
-                        .setSmallIcon(R.drawable.ic_dot)
-                        .setContentTitle("Breathe")
-                        .setContentText("Time to breathe.");
-        Intent resultIntent = new Intent(context, Meditation.class);
-        resultIntent.putExtra("duration", duration);
-        TaskStackBuilder stackBuilder = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(Home.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(1, mBuilder.build());*/
+//        Toast.makeText(context, "duration : "+duration, Toast.LENGTH_LONG).show();
+//        Intent serviceIntent = new Intent(context, NotificationService.class);
+//        serviceIntent.putExtra("duration", duration);
+//        context.startService(serviceIntent);
+        NotificationService notificationService = new NotificationService();
+        notificationService.showNotification(duration, context);
 
-        long when = System.currentTimeMillis();
-        /*NotificationManager notificationManager = (NotificationManager) context
+        /*long when = System.currentTimeMillis();
+        NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Intent data
-        int duration = intent.getIntExtra("duration", 0);
-        Intent notificationIntent = new Intent(context, Meditation.class);
-        notificationIntent.putExtra("duration", duration);
+
+        Intent notificationIntent = new Intent(context, Home.class);
+        notificationIntent.putExtra("duration", Integer.parseInt(duration));
+        notificationIntent.putExtra("nmId", MID);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 123,
@@ -83,16 +70,18 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                 .setContentText("Take time to breathe.").setSound(alarmSound)
                 .setAutoCancel(true)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                .addAction(2, "IGNORE", resultPendingIntent)
+//                .addAction(2, "IGNORE", resultPendingIntent)
                 .addAction(1,"BREATHE", pendingIntent);
         notificationManager.notify(MID, mNotifyBuilder.build());
 //        notificationManager.cancel(MID);
         MID++;*/
-        }
 
+//        StaticWakeLock.lockOff(context);
+        }
+/*
     public void clearNotification(int id){
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(id);
-    }
+    }*/
 
 }

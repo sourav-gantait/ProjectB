@@ -8,20 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by Sourendra on 9/17/2017.
  */
 
 public class NotificationService extends Service {
-    private NotificationManager mManager;
-    int MID=0;
+    int MID=1;
     @Override
     public IBinder onBind(Intent arg0)
     {
@@ -37,41 +38,75 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("onStartCommand", "OK");
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext()
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        /*Log.e("onStartCommand", "OK");
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Intent data
-        int duration = intent.getIntExtra("duration", 0);
-        Intent notificationIntent = new Intent(getApplicationContext(), Meditation.class);
+        Bundle bundle = intent.getExtras();
+        String duration = bundle.getString("duration");
+        Log.e("duration=====>", "=="+duration);
+        Intent notificationIntent = new Intent(this, Home.class);
         notificationIntent.putExtra("duration", duration);
+        notificationIntent.putExtra("nmId", MID);
+        Toast.makeText(getApplicationContext(), "duration="+duration+":::nmId="+MID, Toast.LENGTH_SHORT).show();
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 123,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 123, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(getApplicationContext(),  123, new Intent(), 0);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this,  123, new Intent(), 0);
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        SpannableString title = new SpannableString("Breathe.now");
-        title.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(R.color.colorRedDot)), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        SpannableString title = new SpannableString("Breathe.now");
+//        title.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        NotificationCompat.Builder mNotifyBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(
-                getApplicationContext()).setSmallIcon(R.drawable.ic_dot)
-                .setContentTitle(title)
+        mNotifyBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setContentIntent(pendingIntent)
+//                .setSmallIcon(R.drawable.icon_red_dot)
+                .setContentTitle("Breathe. now")
                 .setContentText("Take time to breathe.").setSound(alarmSound)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                .addAction(2, "IGNORE", resultPendingIntent)
-                .addAction(1,"BREATHE", pendingIntent);
+//                .addAction(2, "IGNORE", resultPendingIntent)
+                .addAction(R.drawable.icon_red_dot,"BREATHE", pendingIntent);
         notificationManager.notify(MID, mNotifyBuilder.build());
 //        notificationManager.cancel(MID);
-        MID++;
+        MID++;*/
         return START_STICKY;
     }
 
-    @SuppressWarnings("static-access")
+    public void showNotification(String duration, Context context){
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent notificationIntent = new Intent(context, Home.class);
+        notificationIntent.putExtra("duration", duration);
+        notificationIntent.putExtra("nmId", MID);
+//        Toast.makeText(context, "duration="+duration+":::nmId="+MID, Toast.LENGTH_SHORT).show();
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 123, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context,  123, new Intent(), 0);
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+//        SpannableString title = new SpannableString("Breathe.now");
+//        title.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        NotificationCompat.Builder mNotifyBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.icon_red_dot)
+                .setContentTitle("Breathe. now")
+                .setContentText("Take time to breathe.").setSound(alarmSound)
+                .setAutoCancel(false)
+                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+//                .addAction(2, "IGNORE", resultPendingIntent)
+                .addAction(R.drawable.icon_red_dot,"BREATHE", pendingIntent);
+        notificationManager.notify(MID, mNotifyBuilder.build());
+//        notificationManager.cancel(MID);
+        MID++;
+    }
+
+//    @SuppressWarnings("static-access")
     /*@Override
     public void onStart(Intent intent, int startId)
     {

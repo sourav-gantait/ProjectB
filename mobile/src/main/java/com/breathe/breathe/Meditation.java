@@ -58,6 +58,8 @@ public class Meditation extends AppCompatActivity {
 //        if (durationTime == 15 || durationTime == 30 || durationTime == 60) {
         if (durationTime != 0) {
             startTimer(durationTime);
+        }else {
+            finish();
         }
 //        }
 

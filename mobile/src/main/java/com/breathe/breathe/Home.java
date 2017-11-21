@@ -1,6 +1,7 @@
 package com.breathe.breathe;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,7 +34,7 @@ public class Home extends AppCompatActivity {
     TextView tvTimeTotal;
 
     Button btnSetMyself;
-    Button btnRandom;
+//    Button btnRandom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,27 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
+        Bundle bundle = getIntent().getExtras();
+        if (getIntent().getStringExtra("duration") != null) {
+            String durationTime = bundle.getString("duration");
+            int nmId = bundle.getInt("nmId", 0);
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(nmId);
+            int duration = Integer.parseInt(durationTime.split(" ")[0]);
+            Intent intent = new Intent(Home.this, Meditation.class);
+            intent.putExtra("duration", duration);
+            startActivityForResult(intent, 1);
+
+        }
+
         rlFifteenSecs = (RelativeLayout) findViewById(R.id.rlFifteenSecs);
         rlThirtySecs = (RelativeLayout) findViewById(R.id.rlThirtySecs);
         rlSixtySecs = (RelativeLayout) findViewById(R.id.rlSixtySecs);
 
         tvAppName = (TextView) findViewById(R.id.home_tvAppName);
-        btnSetMyself = (Button)findViewById(R.id.home_btnSetMyself);
-        btnRandom = (Button)findViewById(R.id.home_btnRandom);
+        btnSetMyself = (Button) findViewById(R.id.home_btnSetMyself);
+//        btnRandom = (Button) findViewById(R.id.home_btnRandom);
 
         SpannableString appName = new SpannableString("breathe.");
         appName.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

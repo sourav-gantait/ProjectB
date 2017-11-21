@@ -9,6 +9,7 @@
     <color name="colorBtnGrey">#FF666666</color>
     <color name="colorBlack">#FF000000</color>
     <color name="colorRedDot">#FFD42931</color>
+    <color name="colorRedRandom">#f0434b</color>
     <color name="colorLineDark">#FF4A4A4A</color>
     <color name="colorLineLight">#FFC8C7CC</color>
     <color name="colorTimeSet">#FF333333</color>

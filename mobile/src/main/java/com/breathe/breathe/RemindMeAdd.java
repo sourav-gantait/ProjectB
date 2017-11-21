@@ -83,6 +83,11 @@ public class RemindMeAdd extends Activity {
         if (getIntent().getStringExtra("id") != null) {
             editId = bundle.getString("id");
         }
+        boolean isRandom = sharedpreferences.getBoolean("isRandom", false);
+        if (isRandom){
+            startActivity(new Intent(RemindMeAdd.this, ReminderList.class));
+            finish();
+        }
         initLayout();
 
         llDayMon.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +214,7 @@ public class RemindMeAdd extends Activity {
         if (!storedJsonData.equals("")) {
             if (alReminder.size() == 3 && (id.equals("") || id == null)) {
                 startActivity(new Intent(RemindMeAdd.this, ReminderList.class));
+                finish();
             } else {
                 for (int i = 0; i < alReminder.size(); i++) {
                     HashMap<String, String> hmap = alReminder.get(i);
@@ -394,6 +400,7 @@ public class RemindMeAdd extends Activity {
             hashMap.put("hour", hour);
             hashMap.put("minutes", mins);
             hashMap.put("timeperiod", timePeriod);
+            hashMap.put("active", "yes");
             if (!editId.equals("") && editId != null) {
                 alReminder.set(position, hashMap);
             } else {
@@ -403,9 +410,9 @@ public class RemindMeAdd extends Activity {
             String json = gson.toJson(alReminder);
             editor.putString(DATA_TAG, json);
             editor.commit();
-            for(int i = 0; i<alReminder.size(); i++){
+            /*for(int i = 0; i<alReminder.size(); i++){
                 setReminderNotification(alReminder.get(i));
-            }
+            }*/
 
             Intent intent = new Intent(RemindMeAdd.this, ReminderList.class);
             startActivity(intent);
@@ -421,7 +428,7 @@ public class RemindMeAdd extends Activity {
             createRandom(ids, randomNumber);
         }
     }
-
+/*
     private void setReminderNotification(HashMap<String, String> hashMap){
 
         String id = hashMap.get("id");
@@ -456,7 +463,7 @@ public class RemindMeAdd extends Activity {
         }
     }
 
-    private void setNotification(int week, int minutes, int hour, String timeperiod, String duration){
+    private void setNotification(int weekDay, int minutes, int hour, String timeperiod, String duration){
         Intent myIntent = new Intent(getApplicationContext() , AlarmNotificationReceiver.class);
         myIntent.putExtra("duration", duration);
         Log.e("duration==>", "=="+duration);
@@ -466,7 +473,7 @@ public class RemindMeAdd extends Activity {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(TimeZone.getDefault());
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.DAY_OF_WEEK, week);
+        calendar.set(Calendar.DAY_OF_WEEK, weekDay);
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.HOUR, hour);
         if (timeperiod.equals("AM")) {
@@ -476,9 +483,9 @@ public class RemindMeAdd extends Activity {
             calendar.set(Calendar.AM_PM, Calendar.PM);
             Log.e("timeperiod=PM=>", "OK");
         }
-//        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        /*Log.e("week==>", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
-        Log.e("week==>", String.valueOf(week));*/
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        *//*Log.e("week==>", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
+        Log.e("week==>", String.valueOf(week));*//*
 
         Log.e("hour==>", String.valueOf(hour));
 
@@ -486,9 +493,9 @@ public class RemindMeAdd extends Activity {
 
         Log.e("notification==>", String.valueOf(calendar.getTimeInMillis()));
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7 , pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7 , pendingIntent);
 //        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 //                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 //                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
-    }
+    }*/
 }
