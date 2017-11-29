@@ -83,9 +83,13 @@ public class NotificationService extends Service {
 //        Toast.makeText(context, "duration="+duration+":::nmId="+MID, Toast.LENGTH_SHORT).show();
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        Intent cancelIntent = new Intent(context, NotificationCancelService.class);
+        cancelIntent.putExtra("duration", duration);
+        cancelIntent.putExtra("nmId", MID);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 123, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(context,  123, new Intent(), 0);
+        PendingIntent resultPendingIntent = PendingIntent.getService(context,  123, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -94,13 +98,13 @@ public class NotificationService extends Service {
 
         NotificationCompat.Builder mNotifyBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.icon_red_dot)
+                .setSmallIcon(R.drawable.notification_red)
                 .setContentTitle("Breathe. now")
                 .setContentText("Take time to breathe.").setSound(alarmSound)
                 .setAutoCancel(false)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-//                .addAction(2, "IGNORE", resultPendingIntent)
-                .addAction(R.drawable.icon_red_dot,"BREATHE", pendingIntent);
+                .addAction(R.drawable.notification_red, "IGNORE", resultPendingIntent)
+                .addAction(R.drawable.notification_red,"BREATHE", pendingIntent);
         notificationManager.notify(MID, mNotifyBuilder.build());
 //        notificationManager.cancel(MID);
         MID++;

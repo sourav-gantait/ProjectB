@@ -222,8 +222,10 @@
 
             <com.breathe.breathe.SwitchButton
                 android:id="@+id/rowReminder_sbActive"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="@dimen/margin_low"
+                android:layout_marginTop="@dimen/margin_low"
                 android:layout_gravity="end"
                 app:sb_checked="true"
                 app:sb_checked_color="@color/colorRedDot"
@@ -232,7 +234,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/days_text">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -242,6 +245,7 @@
                         android:id="@+id/rowReminder_rlEdit"
                         android:layout_width="32dp"
                         android:layout_height="35dp"
+                        android:layout_marginRight="@dimen/margin_low"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true">
@@ -267,6 +271,7 @@
                         android:id="@+id/rowReminder_rlDelete"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
+                        android:layout_marginLeft="@dimen/margin_low"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true">

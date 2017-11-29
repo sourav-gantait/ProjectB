@@ -1,5 +1,6 @@
 package com.breathe.breathe;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -44,17 +45,19 @@ public class ReminderList extends AppCompatActivity {
     LinearLayout llRandom;
     LinearLayout llAdd;
     LinearLayout llRandomActive;
-    ArrayList<HashMap<String, String>> alReminder;
+    ArrayList<HashMap<String, String>> alReminder = new ArrayList<>();
     Set<String> setRequestCodes;
     int requestCode = 1;
     SharedPreferences sharedpreferences;
     Gson gson = new Gson();
     boolean isRandom = false;
+    public static Activity reminderList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder_list);
+        reminderList = this;
 
         SharedPreferences storedSF = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String storedJsonData = storedSF.getString(DATA_TAG, null);
@@ -88,7 +91,7 @@ public class ReminderList extends AppCompatActivity {
             llList.setVisibility(View.GONE);
 
             tvNoReminders.setVisibility(View.VISIBLE);
-            tvNoReminders.setText("You have set your reminders to random.");
+            tvNoReminders.setText("You have set your reminders to random.\nYou will get a reminder between 8:00AM - 9:00PM once a day for 15 Seconds.");
 //            for (int i = 0; i<alRequestCodes.size(); i++){
 //                String requestCode = alRequestCodes.get(i);
 //                int reqCode = Integer.parseInt(requestCode);
@@ -102,7 +105,7 @@ public class ReminderList extends AppCompatActivity {
             llRandomActive.setVisibility(View.GONE);
             llRandom.setBackgroundResource(R.drawable.btn_border);
 
-            llAdd.setEnabled(false);
+            llAdd.setEnabled(true);
             llAdd.setBackgroundResource(R.drawable.btn_border);
             ((TextView) findViewById(R.id.reminderList_tvAdd)).setTextColor(getResources().getColor(R.color.colorWhite));
             llList.setVisibility(View.VISIBLE);
@@ -136,7 +139,7 @@ public class ReminderList extends AppCompatActivity {
                     llRandomActive.setVisibility(View.GONE);
                     llRandom.setBackgroundResource(R.drawable.btn_border);
 
-                    llAdd.setEnabled(false);
+                    llAdd.setEnabled(true);
                     llAdd.setBackgroundResource(R.drawable.btn_border);
                     ((TextView) findViewById(R.id.reminderList_tvAdd)).setTextColor(getResources().getColor(R.color.colorWhite));
                     if (llList.getChildCount() > 0) {
@@ -154,6 +157,7 @@ public class ReminderList extends AppCompatActivity {
                     editor.putBoolean("isRandom", false);
                     editor.commit();
                     isRandom = false;
+                    setRandomReminder(isRandom);
                 } else {
                     llRandomActive.setVisibility(View.VISIBLE);
                     llRandom.setBackgroundResource(R.drawable.bg_btn_random);
@@ -164,7 +168,7 @@ public class ReminderList extends AppCompatActivity {
                     llList.setVisibility(View.GONE);
 
                     tvNoReminders.setVisibility(View.VISIBLE);
-                    tvNoReminders.setText("You have set your reminders to random.");
+                    tvNoReminders.setText("You have set your reminders to random.\nYou will get a reminder between 8:00AM - 9:00PM once a day for 15 Seconds.");
                     for (String requestCode : setRequestCodes) {
 //                        String requestCode = alRequestCodes.;
                         int reqCode = Integer.parseInt(requestCode);
@@ -178,13 +182,14 @@ public class ReminderList extends AppCompatActivity {
                     editor.putBoolean("isRandom", true);
                     editor.commit();
                     isRandom = true;
+                    setRandomReminder(isRandom);
                 }
 
             }
         });
 
 
-        if (alReminder.size() > 0) {
+        if (null != alReminder && alReminder.size() > 0) {
             /*//Cancel all previous alarmmanager//
             Intent myIntent = new Intent(getApplicationContext() , AlarmNotificationReceiver.class);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -206,7 +211,7 @@ public class ReminderList extends AppCompatActivity {
 //                setReminderNotification(alReminder.get(i));
             }
         }
-        if (alReminder.size() == 3) {
+        if (null != alReminder && alReminder.size() == 3) {
             llAdd.setEnabled(false);
             llAdd.setBackgroundResource(R.drawable.btn_border_disable);
             ((TextView) findViewById(R.id.reminderList_tvAdd)).setTextColor(getResources().getColor(R.color.colorGrey));
@@ -353,7 +358,7 @@ public class ReminderList extends AppCompatActivity {
             for (String requestCode : setRequestCodes) {
                 int reqCode = Integer.parseInt(requestCode);
                 //Cancel all previous alarmmanager//
-                Intent myIntent = new Intent(getApplicationContext(), AlarmNotificationReceiver.class);
+                Intent myIntent = new Intent(ReminderList.this, AlarmNotificationReceiver.class);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 PendingIntent pendingIntent = PendingIntent.getActivity(ReminderList.this, reqCode, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                 alarmManager.cancel(pendingIntent);
@@ -426,13 +431,28 @@ public class ReminderList extends AppCompatActivity {
         } else {
             calendar.set(Calendar.AM_PM, Calendar.PM);
         }
-        Log.e("weekDay==>", String.valueOf(weekDay));
-        Log.e("DAY_OF_WEEK==>", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK)));
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
 //        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+60*1000, AlarmManager.INTERVAL_DAY * 7, pendingIntent);
 //        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 //                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 //                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+    }
+
+    private void setRandomReminder(boolean isRandom){
+        if (isRandom){
+            Intent myIntent = new Intent(ReminderList.this, RandomReminderReceiver.class);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(ReminderList.this, 1001, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }else {
+            Intent myIntent = new Intent(ReminderList.this, RandomReminderReceiver.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getActivity(ReminderList.this, 1001, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            alarmManager.cancel(pendingIntent);
+        }
     }
 }
