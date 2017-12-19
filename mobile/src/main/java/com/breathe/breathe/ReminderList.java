@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -120,6 +121,7 @@ public class ReminderList extends AppCompatActivity {
         llHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Home.home.finish();
                 startActivity(new Intent(ReminderList.this, Home.class));
                 finish();
             }
@@ -149,9 +151,11 @@ public class ReminderList extends AppCompatActivity {
                         tvNoReminders.setVisibility(View.VISIBLE);
                         tvNoReminders.setText("You have no reminders.");
                     }
-                    for (int i = 0; i < alReminder.size(); i++) {
-                        setReminderNotification(alReminder.get(i), requestCode);
-                        requestCode++;
+                    if (null != alReminder) {
+                        for (int i = 0; i < alReminder.size(); i++) {
+                            setReminderNotification(alReminder.get(i), requestCode);
+                            requestCode++;
+                        }
                     }
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putBoolean("isRandom", false);
@@ -207,6 +211,7 @@ public class ReminderList extends AppCompatActivity {
                 String minutes = hashMap.get("minutes");
                 String timeperiod = hashMap.get("timeperiod");
                 String active = hashMap.get("active");
+                Log.d("id--->", "======="+id);
                 addReminder(id, days, duration, hour, minutes, timeperiod, active);
 //                setReminderNotification(alReminder.get(i));
             }
@@ -286,7 +291,7 @@ public class ReminderList extends AppCompatActivity {
         });
     }
 
-    private void setActive(String id, boolean isActive){
+    private void setActive(String id, boolean isActive) {
         for (int i = 0; i < llList.getChildCount(); i++) {
             HashMap<String, String> hashMap = alReminder.get(i);
             String storedId = hashMap.get("id");
@@ -296,9 +301,9 @@ public class ReminderList extends AppCompatActivity {
             String minutes = hashMap.get("minutes");
             String timeperiod = hashMap.get("timeperiod");
             if (storedId.equals(id)) {
-                if (isActive){
+                if (isActive) {
                     hashMap.put("active", "yes");
-                }else {
+                } else {
                     hashMap.put("active", "no");
                 }
                 hashMap.put("id", storedId);
@@ -348,6 +353,7 @@ public class ReminderList extends AppCompatActivity {
     }
 
     private void editReminder(int position, String id) {
+        Log.d("editid-list-->", "======="+id);
         Intent intent = new Intent(ReminderList.this, RemindMeAdd.class);
         intent.putExtra("id", id);
         startActivity(intent);
@@ -415,40 +421,56 @@ public class ReminderList extends AppCompatActivity {
     }
 
     private void setNotification(int weekDay, int minutes, int hour, String timeperiod, String duration, int requestCode) {
-        Intent myIntent = new Intent(ReminderList.this, AlarmNotificationReceiver.class);
-        myIntent.putExtra("duration", duration);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(ReminderList.this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         Calendar calendar = Calendar.getInstance();
 //        calendar.setTimeInMillis(System.currentTimeMillis());
 //        calendar.setTimeZone(TimeZone.getDefault());
         calendar.set(Calendar.DAY_OF_WEEK, weekDay);
         calendar.set(Calendar.HOUR, hour);
         calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, 0);
         if (timeperiod.equals("AM")) {
             calendar.set(Calendar.AM_PM, Calendar.AM);
         } else {
             calendar.set(Calendar.AM_PM, Calendar.PM);
         }
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+        long time = calendar.getTimeInMillis();
+        Intent myIntent = new Intent(ReminderList.this, AlarmNotificationReceiver.class);
+        myIntent.putExtra("duration", duration);
+        myIntent.putExtra("time", time);
+        myIntent.putExtra("requestCode", requestCode);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ReminderList.this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+//        }else {
+//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+//        }
+//        Log.d("setTime---->", String.valueOf(time));
+//        Log.d("systemTime---->", String.valueOf(System.currentTimeMillis()));
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+//        }else {
+//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+//        }
 //        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+60*1000, AlarmManager.INTERVAL_DAY * 7, pendingIntent);
 //        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 //                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 //                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
     }
 
-    private void setRandomReminder(boolean isRandom){
-        if (isRandom){
+    private void setRandomReminder(boolean isRandom) {
+        if (isRandom) {
             Intent myIntent = new Intent(ReminderList.this, RandomReminderReceiver.class);
-            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(ReminderList.this, 1001, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(ReminderList.this, 1001, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-        }else {
+            calendar.set(Calendar.HOUR_OF_DAY, 7);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        } else {
             Intent myIntent = new Intent(ReminderList.this, RandomReminderReceiver.class);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             PendingIntent pendingIntent = PendingIntent.getActivity(ReminderList.this, 1001, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);

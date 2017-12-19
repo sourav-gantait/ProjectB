@@ -2,14 +2,17 @@ package com.breathe.breathe;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -21,11 +24,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class Home extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPreference";
@@ -44,12 +50,15 @@ public class Home extends AppCompatActivity {
     LinearLayout llReminder;
     TextView tvReminder;
     Button btnRemindMe;
+    public static Activity home;
 //    Button btnRandom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        home = this;
+//        enableReceiver();
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         ArrayList<HashMap<String, String>> alReminder = getStoredReminders();
@@ -136,154 +145,98 @@ public class Home extends AppCompatActivity {
     }
 
     private void showNextReminder(ArrayList<HashMap<String, String>> alReminder) {
-        Calendar calendar = Calendar.getInstance();
-        boolean isFound = false;
+        List<Calendar> allAlarmDays = new ArrayList<>();
+        for (int j = 0; j < alReminder.size(); j++) {
+            String[] daysArray = alReminder.get(j).get("days").split(",");
 
-        Collections.sort(alReminder, new Comparator<HashMap<String, String>>() {
-            @Override
-            public int compare(HashMap<String, String> map, HashMap<String, String> t1) {
-                return map.get("timeperiod").compareTo(t1.get("timeperiod"));
-            }
-        });
-        Collections.sort(alReminder, new Comparator<HashMap<String, String>>() {
-            @Override
-            public int compare(HashMap<String, String> map, HashMap<String, String> t1) {
-                return map.get("minutes").compareTo(t1.get("minutes"));
-            }
-        });
-        Collections.sort(alReminder, new Comparator<HashMap<String, String>>() {
-            @Override
-            public int compare(HashMap<String, String> map, HashMap<String, String> t1) {
-//                Log.d("map--->", map.get("hour"));
-//                Log.d("t1--->", map.get("hour"));
-                return map.get("hour").compareTo(t1.get("hour"));
-            }
-        });
-        /*for (int i = 0; i<alReminder.size(); i++){
-            HashMap<String, String> hashMap = alReminder.get(i);
-            String id = hashMap.get("id");
-            String days = hashMap.get("days");
-            String duration = hashMap.get("duration");
-            String hour = hashMap.get("hour");
-            String minutes = hashMap.get("minutes");
-            String timeperiod = hashMap.get("timeperiod");
-            Log.d("days--->", days);
-            Log.d("time--->", hour+":"+minutes+timeperiod);
-        }*/
-        HashMap<String, String> nextTime = new HashMap<>();
-        int today = calendar.get(Calendar.DAY_OF_WEEK);
-        for (int i = 0; i< 7; i++){
-            int today1 = (today+i) % 7;
-        }
+            String hour = alReminder.get(j).get("hour");
+            String minutes = alReminder.get(j).get("minutes");
+            String timeperiod = alReminder.get(j).get("timeperiod");
 
+            for (int i = 0; i < 8; i++) {
+                Calendar tempDay = Calendar.getInstance();
+                tempDay.setFirstDayOfWeek(Calendar.MONDAY);
+                tempDay.add(Calendar.DATE, i);
+                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
 
-        for (int i = 0; i < alReminder.size(); i++) {
-            if (!isFound) {
-                HashMap<String, String> hashMap = alReminder.get(i);
-                String id = hashMap.get("id");
-                String days = hashMap.get("days");
-                String duration = hashMap.get("duration");
-                String hour = hashMap.get("hour");
-                String minutes = hashMap.get("minutes");
-                String timeperiod = hashMap.get("timeperiod");
-                String active = hashMap.get("active");
-                String[] daysArray = days.split(",");
-                if (active.equals("yes")) {
-                    if (daysArray[0].equals("1") && !isFound) {
-                        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-                            if (calendar.get(Calendar.HOUR)< Integer.parseInt(hour)){
-                                if (calendar.get(Calendar.MINUTE) < Integer.parseInt(minutes)){
-                                    tvReminder.setText("Today @ " + hour + ":" + minutes + " "+timeperiod);
-                                    isFound = true;
-                                }
-                            }
-                        } else {
-                            tvReminder.setText("Monday @ " + hour + ":" + minutes + " "+timeperiod);
-                            isFound = true;
-                        }
+                int tempI = getDayOfWeek(dayFormat.format(tempDay.getTime()));
+
+                if (daysArray[tempI].equals("1")) {
+                    tempDay.set(Calendar.HOUR, Integer.parseInt(hour));
+                    tempDay.set(Calendar.MINUTE, Integer.parseInt(minutes));
+                    tempDay.set(Calendar.SECOND, 0);
+                    if (timeperiod.equals("AM")) {
+                        tempDay.set(Calendar.AM_PM, Calendar.AM);
+                    } else {
+                        tempDay.set(Calendar.AM_PM, Calendar.PM);
                     }
-                    if (daysArray[1].equals("1") && !isFound) {
-                        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
-                            if (calendar.get(Calendar.HOUR)< Integer.parseInt(hour)){
-                                if (calendar.get(Calendar.MINUTE) < Integer.parseInt(minutes)){
-                                    tvReminder.setText("Today @ " + hour + ":" + minutes + " "+timeperiod);
-                                    isFound = true;
-                                }
-                            }
-                        } else {
-                            tvReminder.setText("Tuesday @ " + hour + ":" + minutes + " "+timeperiod);
-                            isFound = true;
-                        }
-                    }
-                    if (daysArray[2].equals("1") && !isFound) {
-                        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
-                            if (calendar.get(Calendar.HOUR)< Integer.parseInt(hour)){
-                                if (calendar.get(Calendar.MINUTE) < Integer.parseInt(minutes)){
-                                    tvReminder.setText("Today @ " + hour + ":" + minutes + " "+timeperiod);
-                                    isFound = true;
-                                }
-                            }
-                        } else {
-                            tvReminder.setText("Wednesday @ " + hour + ":" + minutes + " "+timeperiod);
-                            isFound = true;
-                        }
-                    }
-                    if (daysArray[3].equals("1") && !isFound) {
-                        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
-                            if (calendar.get(Calendar.HOUR)< Integer.parseInt(hour)){
-                                if (calendar.get(Calendar.MINUTE) < Integer.parseInt(minutes)){
-                                    tvReminder.setText("Today @ " + hour + ":" + minutes + " "+timeperiod);
-                                    isFound = true;
-                                }
-                            }
-                        } else {
-                            tvReminder.setText("Thursday @ " + hour + ":" + minutes + " "+timeperiod);
-                            isFound = true;
-                        }
-                    }
-                    if (daysArray[4].equals("1") && !isFound) {
-                        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
-                            if (calendar.get(Calendar.HOUR)< Integer.parseInt(hour)){
-                                if (calendar.get(Calendar.MINUTE) < Integer.parseInt(minutes)){
-                                    tvReminder.setText("Today @ " + hour + ":" + minutes + " "+timeperiod);
-                                    isFound = true;
-                                }
-                            }
-                        } else {
-                            tvReminder.setText("Friday @ " + hour + ":" + minutes + " "+timeperiod);
-                            isFound = true;
-                        }
-                    }
-                    if (daysArray[5].equals("1") && !isFound) {
-                        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-                            if (calendar.get(Calendar.HOUR)< Integer.parseInt(hour)){
-                                if (calendar.get(Calendar.MINUTE) < Integer.parseInt(minutes)){
-                                    tvReminder.setText("Today @ " + hour + ":" + minutes + " "+timeperiod);
-                                    isFound = true;
-                                }
-                            }
-                        } else {
-                            tvReminder.setText("Saturday @ " + hour + ":" + minutes + " "+timeperiod);
-                            isFound = true;
-                        }
-                    }
-                    if (daysArray[6].equals("1") && !isFound) {
-                        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                            if (calendar.get(Calendar.HOUR)< Integer.parseInt(hour)){
-                                if (calendar.get(Calendar.MINUTE) < Integer.parseInt(minutes)){
-                                    tvReminder.setText("Today @ " + hour + ":" + minutes + " "+timeperiod);
-                                    isFound = true;
-                                }
-                            }
-                        } else {
-                            tvReminder.setText("Sunday @ " + hour + ":" + minutes + " "+timeperiod);
-                            isFound = true;
-                        }
+                    if (tempDay.after(Calendar.getInstance())) {
+                        allAlarmDays.add(tempDay);
                     }
                 }
             }
         }
+        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
+            @Override
+            public int compare(Calendar calendar, Calendar t1) {
+                return calendar.get(Calendar.AM_PM) - t1.get(Calendar.AM_PM);
+            }
+        });
+        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
+            @Override
+            public int compare(Calendar calendar, Calendar t1) {
+                return calendar.get(Calendar.MINUTE) - t1.get(Calendar.MINUTE);
+            }
+        });
+        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
+            @Override
+            public int compare(Calendar calendar, Calendar t1) {
+                return calendar.get(Calendar.HOUR) - t1.get(Calendar.HOUR);
+            }
+        });
+        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
+            @Override
+            public int compare(Calendar calendar, Calendar t1) {
+                return calendar.get(Calendar.DATE) - t1.get(Calendar.DATE);
+            }
+        });
+                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+                int hour = allAlarmDays.get(0).get(Calendar.HOUR);
+                int minutes = allAlarmDays.get(0).get(Calendar.MINUTE);
+                int AMorPM = allAlarmDays.get(0).get(Calendar.AM_PM);
+                String fullDayTime = dayFormat.format(allAlarmDays.get(0).getTime()) + "_" + String.valueOf(hour) + "_" + String.valueOf(minutes) + "_" + String.valueOf(AMorPM);
+                String hourFormat = "";
+                if (AMorPM == Calendar.AM){
+                    hourFormat = "AM";
+                }else {
+                    hourFormat = "PM";
+                }
+                if (dayFormat.format(allAlarmDays.get(0).getTime()).equals(dayFormat.format(Calendar.getInstance().getTime()))){
+                    tvReminder.setText("Today @ " + String.format("%02d",hour) + ":" + String.format("%02d",minutes) + " " + hourFormat);
+                }else {
+                    tvReminder.setText(dayFormat.format(allAlarmDays.get(0).getTime())+ " @ " + String.format("%02d",hour) + ":" + String.format("%02d",minutes) + " " + hourFormat);
+                }
+            }
 
+    public int getDayOfWeek(String day) {
+        switch (day) {
+            case "Monday":
+                return 0;
+            case "Tuesday":
+                return 1;
+            case "Wednesday":
+                return 2;
+            case "Thursday":
+                return 3;
+            case "Friday":
+                return 4;
+            case "Saturday":
+                return 5;
+            case "Sunday":
+                return 6;
+            default:
+                return 0;
+        }
     }
 
     private void gotoMedition(int duration) {
@@ -337,14 +290,5 @@ public class Home extends AppCompatActivity {
 
         int[] ints = {hours, mins, secs};
         return ints;
-        /*long longVal = biggy.longValue();
-        *//*int hours = (int) longVal / 3600;
-        int remainder = (int) longVal - hours * 3600;*//*
-        int mins = (int)longVal / 60;
-        int remainder = (int)longVal - mins * 60;
-        int secs = remainder;*/
-
-        /*int[] ints = {mins , secs};
-        return ints;*/
     }
 }

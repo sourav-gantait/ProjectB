@@ -89,6 +89,7 @@ public class RemindMeAdd extends Activity {
         if (getIntent().getStringExtra("id") != null) {
             editId = bundle.getString("id");
         }
+        Log.d("editid-add-->", "======="+editId);
         boolean isRandom = sharedpreferences.getBoolean("isRandom", false);
         if (isRandom) {
             startActivity(new Intent(RemindMeAdd.this, ReminderList.class));
@@ -227,6 +228,7 @@ public class RemindMeAdd extends Activity {
                     dataSet.add(hmap);
                     ids.add(Integer.parseInt(alReminder.get(i).get("id")));
                     if ((editId.equals("") || editId == null) && editId.equals(alReminder.get(i).get("id"))) {
+                        Log.d("editId_in_Add--->", "======="+editId);
                         position = i;
                     }
                 }
@@ -328,19 +330,22 @@ public class RemindMeAdd extends Activity {
         for (int i = 0; i < alRemonder.size(); i++) {
             HashMap<String, String> map = alRemonder.get(i);
             String id = map.get("id");
+            Log.d("idexist--->", "======"+id);
             if (id.equals(editId)) {
                 String days = map.get("days");
                 String duration = map.get("duration");
                 String hour = map.get("hour");
                 String minutes = map.get("minutes");
                 String timeperiod = map.get("timeperiod");
+                position = i;
+                Log.d("position--->", "======="+String.valueOf(position));
                 setExistValuesToLayout(days, duration, hour, minutes, timeperiod);
             }
         }
     }
 
-    private void setExistValuesToLayout(String days, String duration, String hour, String minute, String timePeriod) {
-        Log.d("existValues---->", duration + "---:---" + hour + "---:---" + minute + "--:--" + timePeriod);
+    private void setExistValuesToLayout(String days, String duration, String hour, String minute, String hourFormat) {
+        Log.d("existValues---->", duration + "---:---" + hour + "---:---" + minute + "--:--" + hourFormat);
         String[] weekDays = days.split(",");
         if (weekDays[0].equals("1")) {
             llDayMon.setBackgroundResource(R.drawable.circle_day_active);
@@ -372,26 +377,36 @@ public class RemindMeAdd extends Activity {
         }
         int durationSetValue = Arrays.asList(durations).indexOf(duration);
         npSeconds.setValue(durationSetValue);
+        seconds = durations[durationSetValue];
         /*for (int i = 0; i<durations.length; i++){
             if (duration.equals(durations[i])){
                 npSeconds.setValue(i);
             }
         }*/
-        for (int i = 0; i < hours.length; i++) {
+        int hourValue = Arrays.asList(hours).indexOf(hour);
+        npHours.setValue(hourValue);
+        this.hour = hours[hourValue];
+        /*for (int i = 0; i < hours.length; i++) {
             if (hour.equals(hours[i])) {
                 npHours.setValue(i);
             }
-        }
-        for (int j = 0; j < minutes.length; j++) {
+        }*/
+        int minValue = Arrays.asList(minutes).indexOf(minute);
+        npMinutes.setValue(minValue);
+        this.mins = minutes[minValue];
+        /*for (int j = 0; j < minutes.length; j++) {
             if (minute.equals(minutes[j])) {
                 npMinutes.setValue(j);
             }
-        }
-        for (int k = 0; k < amOrPm.length; k++) {
+        }*/
+        int timePeriodValue = Arrays.asList(amOrPm).indexOf(hourFormat);
+        npAMorPM.setValue(timePeriodValue);
+        this.timePeriod = amOrPm[timePeriodValue];
+        /*for (int k = 0; k < amOrPm.length; k++) {
             if (timePeriod.equals(amOrPm[k])) {
                 npAMorPM.setValue(k);
             }
-        }
+        }*/
     }
 
     public static boolean setNumberPickerTextColor(NumberPicker numberPicker) {
@@ -436,6 +451,8 @@ public class RemindMeAdd extends Activity {
     }
 
     private void addToReminderList(Gson gson, ArrayList<HashMap<String, String>> alReminder, String id, int position) {
+        Log.d("position--->", "======="+String.valueOf(position));
+        Log.d("id--->", "======="+id);
         String dayMon = "0";
         String dayTue = "0";
         String dayWed = "0";

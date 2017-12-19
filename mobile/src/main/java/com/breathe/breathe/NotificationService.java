@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.text.SpannableString;
@@ -76,6 +77,7 @@ public class NotificationService extends Service {
     }
 
     public void showNotification(String duration, Context context){
+        Log.d("showNotification---->", "==================================");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent notificationIntent = new Intent(context, Home.class);
         notificationIntent.putExtra("duration", duration);
@@ -108,6 +110,12 @@ public class NotificationService extends Service {
         notificationManager.notify(MID, mNotifyBuilder.build());
 //        notificationManager.cancel(MID);
         MID++;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onDestroy();
+            }
+        }, 100);
     }
 
 //    @SuppressWarnings("static-access")
