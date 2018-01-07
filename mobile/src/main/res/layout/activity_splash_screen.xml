@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorBlack"
     tools:context="com.breathe.breathe.SplashScreen">
 
     <TextView
@@ -16,7 +17,8 @@
         android:layout_height="wrap_content"
         android:text="breathe."
         android:textSize="48dp"
-        android:textColor="@color/colorGrey"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/colorWhite"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

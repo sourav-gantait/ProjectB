@@ -78,7 +78,7 @@ public class ReminderList extends AppCompatActivity {
         llAdd = (LinearLayout) findViewById(R.id.reminderList_llAdd);
         llRandomActive = (LinearLayout) findViewById(R.id.reminderList_llRandomActive);
 
-        SpannableString remindMe = new SpannableString("Remind me.");
+        SpannableString remindMe = new SpannableString("remind me.");
         remindMe.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 9, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvRemindMe.setText(remindMe);
 
@@ -91,8 +91,9 @@ public class ReminderList extends AppCompatActivity {
             ((TextView) findViewById(R.id.reminderList_tvAdd)).setTextColor(getResources().getColor(R.color.colorBtnGrey));
             llList.setVisibility(View.GONE);
 
+            tvNoReminders.setText("You will get a reminder between 8:00AM - 9:00PM once a day for 20 seconds.");
+            tvNoReminders.setTextColor(Color.WHITE);
             tvNoReminders.setVisibility(View.VISIBLE);
-            tvNoReminders.setText("You have set your reminders to random.\nYou will get a reminder between 8:00AM - 9:00PM once a day for 15 Seconds.");
 //            for (int i = 0; i<alRequestCodes.size(); i++){
 //                String requestCode = alRequestCodes.get(i);
 //                int reqCode = Integer.parseInt(requestCode);
@@ -124,6 +125,7 @@ public class ReminderList extends AppCompatActivity {
                 Home.home.finish();
                 startActivity(new Intent(ReminderList.this, Home.class));
                 finish();
+                ReminderList.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -131,6 +133,7 @@ public class ReminderList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(ReminderList.this, RemindMeAdd.class));
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -172,7 +175,7 @@ public class ReminderList extends AppCompatActivity {
                     llList.setVisibility(View.GONE);
 
                     tvNoReminders.setVisibility(View.VISIBLE);
-                    tvNoReminders.setText("You have set your reminders to random.\nYou will get a reminder between 8:00AM - 9:00PM once a day for 15 Seconds.");
+                    tvNoReminders.setText("You will get a reminder between 8:00AM - 9:00PM once a day for 20 seconds.");
                     for (String requestCode : setRequestCodes) {
 //                        String requestCode = alRequestCodes.;
                         int reqCode = Integer.parseInt(requestCode);
@@ -199,7 +202,8 @@ public class ReminderList extends AppCompatActivity {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             PendingIntent pendingIntent = PendingIntent.getActivity(ReminderList.this, 123, myIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             alarmManager.cancel(pendingIntent);*/
-            tvNoReminders.setVisibility(View.GONE);
+            if (!isRandom)
+                tvNoReminders.setVisibility(View.GONE);
             setReminders();
 
             for (int i = 0; i < alReminder.size(); i++) {
@@ -211,7 +215,7 @@ public class ReminderList extends AppCompatActivity {
                 String minutes = hashMap.get("minutes");
                 String timeperiod = hashMap.get("timeperiod");
                 String active = hashMap.get("active");
-                Log.d("id--->", "======="+id);
+                Log.d("id--->", "=======" + id);
                 addReminder(id, days, duration, hour, minutes, timeperiod, active);
 //                setReminderNotification(alReminder.get(i));
             }
@@ -236,7 +240,7 @@ public class ReminderList extends AppCompatActivity {
         LinearLayout llDayFri = (LinearLayout) rowReminder.findViewById(R.id.rowReminder_llDayFri);
         LinearLayout llDaySat = (LinearLayout) rowReminder.findViewById(R.id.rowReminder_llDaySat);
         LinearLayout llDaySun = (LinearLayout) rowReminder.findViewById(R.id.rowReminder_llDaySun);
-        SwitchButton sbActive = (SwitchButton) rowReminder.findViewById(R.id.rowReminder_sbActive);
+        CustomSwitchButton sbActive = (CustomSwitchButton) rowReminder.findViewById(R.id.rowReminder_sbActive);
         RelativeLayout rlEdit = (RelativeLayout) rowReminder.findViewById(R.id.rowReminder_rlEdit);
         RelativeLayout rlDelete = (RelativeLayout) rowReminder.findViewById(R.id.rowReminder_rlDelete);
 
@@ -283,9 +287,9 @@ public class ReminderList extends AppCompatActivity {
                 editReminder(position, id);
             }
         });
-        sbActive.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+        sbActive.setOnCheckedChangeListener(new CustomSwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+            public void onCheckedChanged(CustomSwitchButton view, boolean isChecked) {
                 setActive(id, isChecked);
             }
         });
@@ -353,10 +357,11 @@ public class ReminderList extends AppCompatActivity {
     }
 
     private void editReminder(int position, String id) {
-        Log.d("editid-list-->", "======="+id);
+        Log.d("editid-list-->", "=======" + id);
         Intent intent = new Intent(ReminderList.this, RemindMeAdd.class);
         intent.putExtra("id", id);
         startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private void setReminders() {

@@ -21,7 +21,7 @@
     <dimen name="margin_header">58dp</dimen>
     <dimen name="margin_appNameTop">100dp</dimen>
     <dimen name="margin_pause">90dp</dimen>
-    <dimen name="margin_dayOfWeek">152dp</dimen>
+    <dimen name="margin_dayOfWeek">157dp</dimen>
     <dimen name="margin_darklineTop">198dp</dimen>
     <dimen name="days_text">18sp</dimen>
     <dimen name="days_text_row_reminder">12sp</dimen>

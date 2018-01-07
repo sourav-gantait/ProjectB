@@ -27,25 +27,6 @@ public class CloseNotification extends AppCompatActivity {
         }
         finish();
 
-       /* ArrayList<HashMap<String, String>>  rawData = new ArrayList<>();
-        [{"Sourav Gantait":"32", "Sourav Gantait":"Garia", "Sourav Gantait":"Cerner", "Sourav Gantait":"dfgfg","Saikat Gantait":"32"}]
-        "Sourav Gantait":["", "", ""];
-        "Saikat Gantait":["32"];
-        HashMap<String, List<String>> map = new HashMap<>();
-
-        for (HashMap<String, String> map1 : rawData){
-            for (Map.Entry mapValue : map1.entrySet()){
-                String key = (String) mapValue.getKey();
-                String value = (String) mapValue.getValue();
-                if (!map.containsKey(key)){
-                    List<String> tempList = new ArrayList<>();
-                    tempList.add(value);
-                    map.put(key, tempList);
-                }else {
-                    map.get(key).add(value);
-                }
-            }
-        }*/
     }
 
 

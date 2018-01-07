@@ -1,5 +1,6 @@
 package com.breathe.breathe;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -43,10 +45,10 @@ import static com.breathe.breathe.Home.MyPREFERENCES;
 public class RemindMeAdd extends Activity {
     private final String DATA_TAG = "data_reminder";
     SharedPreferences sharedpreferences;
-    NumberPicker npSeconds;
-    NumberPicker npHours;
-    NumberPicker npMinutes;
-    NumberPicker npAMorPM;
+    CustomNumberPicker npSeconds;
+    CustomNumberPicker npHours;
+    CustomNumberPicker npMinutes;
+    CustomNumberPicker npAMorPM;
 
     LinearLayout llDayMon;
     LinearLayout llDayTue;
@@ -70,7 +72,7 @@ public class RemindMeAdd extends Activity {
     String id = "";
     String editId = "";
     int position = 0;
-    String seconds = "10 seconds";
+    String seconds = "20 seconds";
     String hour = "1";
     String mins = "00";
     String timePeriod = "AM";
@@ -94,6 +96,7 @@ public class RemindMeAdd extends Activity {
         if (isRandom) {
             startActivity(new Intent(RemindMeAdd.this, ReminderList.class));
             finish();
+            RemindMeAdd.this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         }
         initLayout();
 
@@ -191,10 +194,10 @@ public class RemindMeAdd extends Activity {
 
     private void initLayout() {
         TextView tvRemindMe = (TextView) findViewById(R.id.remindMe_tvHeader);
-        npSeconds = (NumberPicker) findViewById(R.id.remindMe_npSeconds);
-        npHours = (NumberPicker) findViewById(R.id.remindMe_npHours);
-        npMinutes = (NumberPicker) findViewById(R.id.remindMe_npMinutes);
-        npAMorPM = (NumberPicker) findViewById(R.id.remindMe_npAMorPM);
+        npSeconds = (CustomNumberPicker) findViewById(R.id.remindMe_npSeconds);
+        npHours = (CustomNumberPicker) findViewById(R.id.remindMe_npHours);
+        npMinutes = (CustomNumberPicker) findViewById(R.id.remindMe_npMinutes);
+        npAMorPM = (CustomNumberPicker) findViewById(R.id.remindMe_npAMorPM);
 
         llDayMon = (LinearLayout) findViewById(R.id.remindMe_llDayMon);
         llDayTue = (LinearLayout) findViewById(R.id.remindMe_llDayTue);
@@ -252,24 +255,26 @@ public class RemindMeAdd extends Activity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
-        SpannableString remindMe = new SpannableString("Remind me.");
+        SpannableString remindMe = new SpannableString("remind me.");
         remindMe.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 9, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvRemindMe.setText(remindMe);
 
-        setNumberPickerTextColor(npSeconds);
+//        setNumberPickerTextColor(npSeconds);
         npSeconds.setMinValue(0);
         npSeconds.setMaxValue(durations.length - 1);
         npSeconds.setDisplayedValues(durations);
         npSeconds.setWrapSelectorWheel(true);
+        npSeconds.setValue(2);
         npSeconds.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 
         for (int i = 0; i < 12; i++) {
             hours[i] = String.valueOf(i + 1);
         }
-        setNumberPickerTextColor(npHours);
+//        setNumberPickerTextColor(npHours);
         npHours.setMinValue(0);
         npHours.setMaxValue(hours.length - 1);
         npHours.setDisplayedValues(hours);
@@ -280,7 +285,7 @@ public class RemindMeAdd extends Activity {
         for (int i = 0; i < 60; i++) {
             minutes[i] = String.format("%02d", (i));
         }
-        setNumberPickerTextColor(npMinutes);
+//        setNumberPickerTextColor(npMinutes);
         npMinutes.setMinValue(0);
         npMinutes.setMaxValue(minutes.length - 1);
         npMinutes.setDisplayedValues(minutes);
@@ -288,7 +293,7 @@ public class RemindMeAdd extends Activity {
 //        npMinutes.setValue(11);
         npMinutes.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 
-        setNumberPickerTextColor(npAMorPM);
+//        setNumberPickerTextColor(npAMorPM);
         npAMorPM.setMinValue(0);
         npAMorPM.setMaxValue(amOrPm.length - 1);
         npAMorPM.setDisplayedValues(amOrPm);
@@ -409,14 +414,20 @@ public class RemindMeAdd extends Activity {
         }*/
     }
 
-    public static boolean setNumberPickerTextColor(NumberPicker numberPicker) {
+    public boolean setNumberPickerTextColor(NumberPicker numberPicker) {
         java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
         for (java.lang.reflect.Field pf : pickerFields) {
             if (pf.getName().equals("mSelectionDivider")) {
                 pf.setAccessible(true);
                 try {
-                    ColorDrawable colorDrawable = new ColorDrawable(Color.WHITE);
-                    pf.set(numberPicker, colorDrawable);
+                    Canvas canvas = new Canvas();
+                    Paint paint = new Paint();
+                    paint.setColor(Color.WHITE);
+//                    canvas.drawLine(0,0, canvas.getWidth(), canvas.getHeight(), paint);
+//                    @SuppressLint("ResourceAsColor")
+//                    ColorDrawable colorDrawable = new ColorDrawable(Color.WHITE);
+//                    colorDrawable.draw(canvas);
+                    pf.set(numberPicker, getResources().getDrawable(R.color.colorLineLight));
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 } catch (Resources.NotFoundException e) {
@@ -428,9 +439,12 @@ public class RemindMeAdd extends Activity {
             }
         }
 
-        final int count = numberPicker.getChildCount();
+        /*final int count = numberPicker.getChildCount();
         for (int i = 0; i < count; i++) {
             View child = numberPicker.getChildAt(i);
+            if (child instanceof TextView){
+                ((TextView)child).setTextSize(20.0f);
+            }
             if (child instanceof EditText) {
                 try {
                     Field selectorWheelPaintField = numberPicker.getClass()
@@ -438,21 +452,20 @@ public class RemindMeAdd extends Activity {
                     selectorWheelPaintField.setAccessible(true);
                     ((Paint) selectorWheelPaintField.get(numberPicker)).setColor(Color.WHITE);
                     ((EditText) child).setTextColor(Color.WHITE);
+                    ((EditText) child).setTextSize(20);
 //                    ((EditText) child).setTextSize(20.0f);
-                    numberPicker.invalidate();
+//                    numberPicker.invalidate();
                     return true;
                 } catch (NoSuchFieldException e) {
                 } catch (IllegalAccessException e) {
                 } catch (IllegalArgumentException e) {
                 }
             }
-        }
+        }*/
         return false;
     }
 
     private void addToReminderList(Gson gson, ArrayList<HashMap<String, String>> alReminder, String id, int position) {
-        Log.d("position--->", "======="+String.valueOf(position));
-        Log.d("id--->", "======="+id);
         String dayMon = "0";
         String dayTue = "0";
         String dayWed = "0";
@@ -482,7 +495,7 @@ public class RemindMeAdd extends Activity {
             daySun = "1";
         }
         if (dayMon.equals("0") && dayTue.equals("0") && dayWed.equals("0") && dayThu.equals("0") && dayFri.equals("0") && daySat.equals("0") && daySun.equals("0")) {
-            Toast.makeText(RemindMeAdd.this, "Select at least one day of th week!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RemindMeAdd.this, "Select at least one day of the week!", Toast.LENGTH_SHORT).show();
         } else {
             HashMap<String, String> hashMap = new HashMap<>();
             hashMap.put("id", id);
@@ -508,6 +521,7 @@ public class RemindMeAdd extends Activity {
             Intent intent = new Intent(RemindMeAdd.this, ReminderList.class);
             startActivity(intent);
             finish();
+            RemindMeAdd.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 

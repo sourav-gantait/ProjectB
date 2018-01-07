@@ -220,7 +220,7 @@
             android:layout_weight="3"
             android:orientation="vertical">
 
-            <com.breathe.breathe.SwitchButton
+            <com.breathe.breathe.CustomSwitchButton
                 android:id="@+id/rowReminder_sbActive"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
@@ -229,6 +229,7 @@
                 android:layout_gravity="end"
                 app:sb_checked="true"
                 app:sb_checked_color="@color/colorRedDot"
+                app:sb_uncheck_color="@color/colorLineLight"
                 app:sb_show_indicator="false" />
 
             <LinearLayout

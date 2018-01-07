@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_pause"
             android:text="Pause"
+            android:fontFamily="sans-serif-light"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/header_text"
             android:layout_alignParentTop="true"

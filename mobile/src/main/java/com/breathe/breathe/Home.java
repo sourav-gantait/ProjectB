@@ -2,11 +2,9 @@ package com.breathe.breathe;
 
 import android.app.Activity;
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -27,10 +25,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 public class Home extends AppCompatActivity {
@@ -39,18 +34,19 @@ public class Home extends AppCompatActivity {
     SharedPreferences sharedpreferences;
 
     TextView tvAppName;
-    RelativeLayout rlFifteenSecs;
-    RelativeLayout rlThirtySecs;
+    RelativeLayout rlTwentySecs;
+    RelativeLayout rlFourtySecs;
     RelativeLayout rlSixtySecs;
     LinearLayout llTimeDuration;
 
     TextView tvTimeSpent;
     TextView tvTimeTotal;
 
-    LinearLayout llReminder;
+    //    LinearLayout llReminder;
     TextView tvReminder;
     Button btnRemindMe;
     public static Activity home;
+    boolean randomReminder;
 //    Button btnRandom;
 
     @Override
@@ -60,6 +56,18 @@ public class Home extends AppCompatActivity {
         home = this;
 //        enableReceiver();
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+//        SharedPreferences storedSF = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        Long storedDuratoin = sharedpreferences.getLong("total_duration", 0);
+        Long spentDuratoin = sharedpreferences.getLong("spent_duration", 0);
+        int[] splittedTimes = splitToLongTimes(BigDecimal.valueOf(storedDuratoin));
+        String splittedHours = "";
+        String splittedMins = "";
+        String splittedSecs = "";
+        for (int i = 0; i < splittedTimes.length; i++) {
+            splittedHours = String.format("%02d", splittedTimes[0]);
+            splittedMins = String.format("%02d", splittedTimes[1]);
+            splittedSecs = String.format("%02d", splittedTimes[2]);
+        }
 
         ArrayList<HashMap<String, String>> alReminder = getStoredReminders();
 
@@ -74,15 +82,16 @@ public class Home extends AppCompatActivity {
             Intent intent = new Intent(Home.this, Meditation.class);
             intent.putExtra("duration", duration);
             startActivityForResult(intent, 1);
+            overridePendingTransition(R.anim.slide_in_right, 0);
 
         }
 
-        rlFifteenSecs = (RelativeLayout) findViewById(R.id.rlFifteenSecs);
-        rlThirtySecs = (RelativeLayout) findViewById(R.id.rlThirtySecs);
+        rlTwentySecs = (RelativeLayout) findViewById(R.id.rlTwentySecs);
+        rlFourtySecs = (RelativeLayout) findViewById(R.id.rlFourtySecs);
         rlSixtySecs = (RelativeLayout) findViewById(R.id.rlSixtySecs);
 
         tvAppName = (TextView) findViewById(R.id.home_tvAppName);
-        llReminder = (LinearLayout) findViewById(R.id.home_llReminder);
+//        llReminder = (LinearLayout) findViewById(R.id.home_llReminder);
         tvReminder = (TextView) findViewById(R.id.home_tvReminderTime);
         btnRemindMe = (Button) findViewById(R.id.home_btnRemindMe);
 //        btnRandom = (Button) findViewById(R.id.home_btnRandom);
@@ -96,18 +105,17 @@ public class Home extends AppCompatActivity {
         llTimeDuration = (LinearLayout) findViewById(R.id.home_llTimes);
         tvTimeSpent.setText("00:00");
         tvTimeTotal.setText("00:00");
-        llTimeDuration.setVisibility(View.GONE);
 
-        rlFifteenSecs.setOnClickListener(new View.OnClickListener() {
+        rlTwentySecs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoMedition(15);
+                gotoMedition(20);
             }
         });
-        rlThirtySecs.setOnClickListener(new View.OnClickListener() {
+        rlFourtySecs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoMedition(30);
+                gotoMedition(40);
             }
         });
         rlSixtySecs.setOnClickListener(new View.OnClickListener() {
@@ -121,16 +129,38 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Home.this, ReminderList.class));
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
-        if (null != alReminder && alReminder.size() > 0) {
+        randomReminder = sharedpreferences.getBoolean("isRandom", false);
+        if (randomReminder) {
+            tvReminder.setText("Reminder : Once a day for 20 seconds");
+            btnRemindMe.setText("Edit Reminder");
+        } else {
+            tvReminder.setText("");
+            btnRemindMe.setText("Remind Me");
+        }
+
+
+        if (storedDuratoin > 0) {
+            Log.d("storedDuration--->", String.valueOf(storedDuratoin));
+            llTimeDuration.setVisibility(View.VISIBLE);
+            tvTimeSpent.setText("00:" + String.format("%02d", spentDuratoin));
+            if (!splittedHours.equals("00") && splittedHours != null) {
+                tvTimeTotal.setText(splittedHours + ":" + splittedMins + ":" + splittedSecs);
+            } else {
+                tvTimeTotal.setText(splittedMins + ":" + splittedSecs);
+            }
+        }else {
+            llTimeDuration.setVisibility(View.GONE);
+        }
+        if ((null != alReminder && alReminder.size() > 0) || randomReminder) {
             showNextReminder(alReminder);
             btnRemindMe.setText("Edit Reminder");
-            llReminder.setVisibility(View.VISIBLE);
+//            llReminder.setVisibility(View.VISIBLE);
         } else {
             btnRemindMe.setText("Remind Me");
-            llReminder.setVisibility(View.GONE);
         }
 
     }
@@ -145,78 +175,62 @@ public class Home extends AppCompatActivity {
     }
 
     private void showNextReminder(ArrayList<HashMap<String, String>> alReminder) {
-        List<Calendar> allAlarmDays = new ArrayList<>();
-        for (int j = 0; j < alReminder.size(); j++) {
-            String[] daysArray = alReminder.get(j).get("days").split(",");
+        if (!randomReminder) {
+            Calendar nextAlarm = null;
+            for (int j = 0; j < alReminder.size(); j++) {
+                String[] daysArray = alReminder.get(j).get("days").split(",");
 
-            String hour = alReminder.get(j).get("hour");
-            String minutes = alReminder.get(j).get("minutes");
-            String timeperiod = alReminder.get(j).get("timeperiod");
+                String hour = alReminder.get(j).get("hour");
+                String minutes = alReminder.get(j).get("minutes");
+                String timeperiod = alReminder.get(j).get("timeperiod");
+                String active = alReminder.get(j).get("active");
 
-            for (int i = 0; i < 8; i++) {
-                Calendar tempDay = Calendar.getInstance();
-                tempDay.setFirstDayOfWeek(Calendar.MONDAY);
-                tempDay.add(Calendar.DATE, i);
+                if (active.equals("yes")) {
+                    for (int i = 0; i < 8; i++) {
+                        Calendar tempDay = Calendar.getInstance();
+//                    tempDay.setFirstDayOfWeek(Calendar.MONDAY);
+                        tempDay.add(Calendar.DATE, i);
+                        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+
+                        int tempI = getDayOfWeek(dayFormat.format(tempDay.getTime()));
+
+                        if (daysArray[tempI].equals("1")) {
+                            tempDay.set(Calendar.HOUR, Integer.parseInt(hour));
+                            tempDay.set(Calendar.MINUTE, Integer.parseInt(minutes));
+                            tempDay.set(Calendar.SECOND, 0);
+                            if (timeperiod.equals("AM")) {
+                                tempDay.set(Calendar.AM_PM, Calendar.AM);
+                            } else {
+                                tempDay.set(Calendar.AM_PM, Calendar.PM);
+                            }
+                            if (tempDay.after(Calendar.getInstance()) && (nextAlarm == null || tempDay.before(nextAlarm))) {
+//                            allAlarmDays.add(tempDay);
+                                nextAlarm = tempDay;
+                            }
+                        }
+
+                    }
+                }
+            }
+            if (nextAlarm != null) {
                 SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-
-                int tempI = getDayOfWeek(dayFormat.format(tempDay.getTime()));
-
-                if (daysArray[tempI].equals("1")) {
-                    tempDay.set(Calendar.HOUR, Integer.parseInt(hour));
-                    tempDay.set(Calendar.MINUTE, Integer.parseInt(minutes));
-                    tempDay.set(Calendar.SECOND, 0);
-                    if (timeperiod.equals("AM")) {
-                        tempDay.set(Calendar.AM_PM, Calendar.AM);
-                    } else {
-                        tempDay.set(Calendar.AM_PM, Calendar.PM);
-                    }
-                    if (tempDay.after(Calendar.getInstance())) {
-                        allAlarmDays.add(tempDay);
-                    }
+                int hour = nextAlarm.get(Calendar.HOUR);
+                int minutes = nextAlarm.get(Calendar.MINUTE);
+                int AMorPM = nextAlarm.get(Calendar.AM_PM);
+                String hourFormat = "";
+                if (AMorPM == Calendar.AM) {
+                    hourFormat = "AM";
+                } else {
+                    hourFormat = "PM";
+                }
+                if (dayFormat.format(nextAlarm.getTime()).equals(dayFormat.format(Calendar.getInstance().getTime()))) {
+                    tvReminder.setText("Reminder: Today @ " + String.format("%02d", hour) + ":" + String.format("%02d", minutes) + " " + hourFormat);
+                } else {
+                    tvReminder.setText("Reminder: " + dayFormat.format(nextAlarm.getTime()) + " @ " + String.format("%02d", hour) + ":" + String.format("%02d", minutes) + " " + hourFormat);
                 }
             }
         }
-        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
-            @Override
-            public int compare(Calendar calendar, Calendar t1) {
-                return calendar.get(Calendar.AM_PM) - t1.get(Calendar.AM_PM);
-            }
-        });
-        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
-            @Override
-            public int compare(Calendar calendar, Calendar t1) {
-                return calendar.get(Calendar.MINUTE) - t1.get(Calendar.MINUTE);
-            }
-        });
-        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
-            @Override
-            public int compare(Calendar calendar, Calendar t1) {
-                return calendar.get(Calendar.HOUR) - t1.get(Calendar.HOUR);
-            }
-        });
-        Collections.sort(allAlarmDays, new Comparator<Calendar>() {
-            @Override
-            public int compare(Calendar calendar, Calendar t1) {
-                return calendar.get(Calendar.DATE) - t1.get(Calendar.DATE);
-            }
-        });
-                SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-                int hour = allAlarmDays.get(0).get(Calendar.HOUR);
-                int minutes = allAlarmDays.get(0).get(Calendar.MINUTE);
-                int AMorPM = allAlarmDays.get(0).get(Calendar.AM_PM);
-                String fullDayTime = dayFormat.format(allAlarmDays.get(0).getTime()) + "_" + String.valueOf(hour) + "_" + String.valueOf(minutes) + "_" + String.valueOf(AMorPM);
-                String hourFormat = "";
-                if (AMorPM == Calendar.AM){
-                    hourFormat = "AM";
-                }else {
-                    hourFormat = "PM";
-                }
-                if (dayFormat.format(allAlarmDays.get(0).getTime()).equals(dayFormat.format(Calendar.getInstance().getTime()))){
-                    tvReminder.setText("Today @ " + String.format("%02d",hour) + ":" + String.format("%02d",minutes) + " " + hourFormat);
-                }else {
-                    tvReminder.setText(dayFormat.format(allAlarmDays.get(0).getTime())+ " @ " + String.format("%02d",hour) + ":" + String.format("%02d",minutes) + " " + hourFormat);
-                }
-            }
+    }
 
     public int getDayOfWeek(String day) {
         switch (day) {
@@ -243,6 +257,7 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(Home.this, Meditation.class);
         intent.putExtra("duration", duration);
         startActivityForResult(intent, 1);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
@@ -265,6 +280,7 @@ public class Home extends AppCompatActivity {
                 }
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putLong("total_duration", storedDuratoin);
+                editor.putLong("spent_duration", result);
                 editor.commit();
                 llTimeDuration.setVisibility(View.VISIBLE);
                 tvTimeSpent.setText("00:" + String.format("%02d", result));

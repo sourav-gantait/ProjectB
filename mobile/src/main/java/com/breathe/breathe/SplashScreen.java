@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 public class SplashScreen extends AppCompatActivity {
@@ -19,6 +20,8 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
 
         tvAppName = (TextView)findViewById(R.id.splashScreen_tvAppName);
@@ -32,6 +35,7 @@ public class SplashScreen extends AppCompatActivity {
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(SplashScreen.this, Home.class);
                 startActivity(mainIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             }
         }, SPLASH_TIME_LENGTH);

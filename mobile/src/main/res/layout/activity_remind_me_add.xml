@@ -30,7 +30,7 @@
             <View
                 android:id="@+id/remindMe_viewUpperLine"
                 android:layout_width="match_parent"
-                android:layout_height="2sp"
+                android:layout_height="1sp"
                 android:layout_marginTop="@dimen/margin_darklineTop"
                 android:background="@color/colorLineDark" />
 
@@ -235,7 +235,7 @@
             <View
                 android:id="@+id/remindMe_viewLowerLine"
                 android:layout_width="match_parent"
-                android:layout_height="2sp"
+                android:layout_height="1sp"
                 android:layout_below="@+id/remindMe_llWeekdays"
                 android:background="@color/colorLineDark" />
 
@@ -244,7 +244,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/remindMe_viewLowerLine"
-                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_xxxhigh"
                 android:gravity="center"
                 android:text="TIME"
                 android:textColor="@color/colorWhite"
@@ -255,17 +255,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_below="@+id/remindMe_tvTimeLbl"
-                android:layout_marginTop="@dimen/margin_xxhigh"
+                android:layout_marginTop="@dimen/margin_high"
                 android:orientation="horizontal">
 
-                <NumberPicker
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="47dp"
+                    android:background="@color/colorBtnGrey" />
+
+                <com.breathe.breathe.CustomNumberPicker
                     android:id="@+id/remindMe_npSeconds"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:divider="@color/colorWhite"
+                    android:dividerPadding="0dp"
+                    android:divider="@color/colorLineLight"
                     android:fadeScrollbars="true" />
 
-                <NumberPicker
+                <com.breathe.breathe.CustomNumberPicker
                     android:id="@+id/remindMe_npHours"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
@@ -274,7 +284,7 @@
                     android:divider="@color/colorWhite"
                     android:fadeScrollbars="true" />
 
-                <NumberPicker
+                <com.breathe.breathe.CustomNumberPicker
                     android:id="@+id/remindMe_npMinutes"
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
@@ -283,13 +293,22 @@
                     android:divider="@color/colorWhite"
                     android:fadeScrollbars="true" />
 
-                <NumberPicker
+                <com.breathe.breathe.CustomNumberPicker
                     android:id="@+id/remindMe_npAMorPM"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/remindMe_npMinutes"
                     android:divider="@color/colorWhite"
                     android:fadeScrollbars="true" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="48dp"
+                    android:background="@color/colorBtnGrey" />
             </RelativeLayout>
 
     <LinearLayout

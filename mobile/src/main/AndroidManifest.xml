@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,8 +16,8 @@
         <activity
             android:name=".SplashScreen"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,8 +27,8 @@
         <activity
             android:name=".Home"
             android:configChanges="orientation"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Meditation"
@@ -46,14 +46,32 @@
         <receiver
             android:name=".AlarmNotificationReceiver"
             android:enabled="true"
-            android:process=":remote" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
-            <!--</intent-filter>-->
-            </receiver>
+            android:process=":remote">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED"/> -->
+            <!-- </intent-filter> -->
+        </receiver>
+        <receiver
+            android:name=".RandomReminderReceiver"
+            android:enabled="true"
+            android:process=":remote">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED"/> -->
+            <!-- </intent-filter> -->
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".NotificationService"
             android:enabled="true" />
+
+        <activity android:name=".CloseNotification"></activity>
     </application>
 
 </manifest>

@@ -35,7 +35,7 @@ public class RandomReminderReceiver extends BroadcastReceiver {
 
     private void setRandomReminder(Context context, int hour, int minutes, int seconds){
         Intent myIntent = new Intent(context, AlarmNotificationReceiver.class);
-        myIntent.putExtra("duration", "15 seconds");
+        myIntent.putExtra("duration", "20 seconds");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1002, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

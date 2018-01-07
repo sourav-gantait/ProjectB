@@ -4,7 +4,7 @@
     android:id="@+id/activity_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/colorBlack"
     tools:context="com.breathe.breathe.Home">
 
     <ScrollView
@@ -25,7 +25,8 @@
                 android:layout_marginTop="@dimen/margin_appNameTop"
                 android:gravity="center"
                 android:text="breathe"
-                android:textColor="@color/colorGrey"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/colorWhite"
                 android:textSize="48dp" />
 
             <LinearLayout
@@ -50,7 +51,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#777776"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/time_duration" />
 
                     <TextView
@@ -59,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/time_spent"
-                        android:textColor="#777776"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/time_text" />
                 </LinearLayout>
 
@@ -75,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#777776"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/time_duration" />
 
                     <TextView
@@ -84,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/time_total"
-                        android:textColor="#777776"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/time_text" />
                 </LinearLayout>
             </LinearLayout>
@@ -101,7 +102,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/rlFifteenSecs"
+                    android:id="@+id/rlTwentySecs"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginLeft="@dimen/margin_high"
@@ -114,15 +115,15 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/margin_medium"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:gravity="center"
-                            android:text="15"
+                            android:text="20"
                             android:textColor="@color/colorWhite"
                             android:textSize="42dp" />
 
@@ -137,7 +138,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rlThirtySecs"
+                    android:id="@+id/rlFourtySecs"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_alignParentTop="true"
@@ -150,15 +151,15 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/margin_medium"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:gravity="center"
-                            android:text="30"
+                            android:text="40"
                             android:textColor="@color/colorWhite"
                             android:textSize="42dp" />
 
@@ -189,13 +190,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/margin_medium"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:gravity="center_horizontal"
                             android:text="60"
                             android:textColor="@color/colorWhite"
@@ -236,35 +237,37 @@
         android:layout_marginBottom="@dimen/margin_medium"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/home_llReminder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/padding_low"
-            android:visibility="gone">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/home_llReminder"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingBottom="@dimen/padding_low">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reminder:"
-                android:textSize="16sp" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Reminder:"-->
+                <!--android:textSize="16sp" />-->
 
             <TextView
                 android:id="@+id/home_tvReminderTime"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/padding_low"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/padding_low"
                 android:text=""
+                android:textColor="@color/colorWhite"
                 android:textSize="16sp" />
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <Button
             android:id="@+id/home_btnRemindMe"
-            android:layout_width="200dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/home_llReminder"
+            android:layout_below="@+id/home_tvReminderTime"
             android:layout_centerHorizontal="true"
             android:background="@drawable/btn_border"
             android:gravity="center"

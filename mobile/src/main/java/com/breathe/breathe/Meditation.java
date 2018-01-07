@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +40,9 @@ public class Meditation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_splash_screen);
         setContentView(R.layout.activity_meditation);
         rlActivityMeditation = (RelativeLayout)findViewById(R.id.activity_meditation);
         rlMeditationActive = (RelativeLayout)findViewById(R.id.meditation_active);
@@ -50,7 +54,7 @@ public class Meditation extends AppCompatActivity {
             public void run() {
                 tvMeditationInstruction.setVisibility(View.GONE);
             }
-        }, 3000);
+        }, 8000);
 
         Bundle bundle = getIntent().getExtras();
         final int durationTime = bundle.getInt("duration", 0);
@@ -100,6 +104,7 @@ public class Meditation extends AppCompatActivity {
                 intent.putExtra("result", totalTimeSpent);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                Meditation.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         }.start();
     }
@@ -127,6 +132,7 @@ public class Meditation extends AppCompatActivity {
                 intent.putExtra("result", totalTimeSpent);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                Meditation.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         }.start();
     }
@@ -140,7 +146,7 @@ public class Meditation extends AppCompatActivity {
         Button btnStop = (Button)meditationPauseView.findViewById(R.id.meditatiionPause_btnStop);
         Button btnContinue = (Button)meditationPauseView.findViewById(R.id.meditatiionPause_btnContinue);
 
-        SpannableString pause = new SpannableString("Pause.");
+        SpannableString pause = new SpannableString("pause.");
         pause.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorRedDot)), 5, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvPause.setText(pause);
         rlMeditationActive.setVisibility(View.GONE);
@@ -167,6 +173,7 @@ public class Meditation extends AppCompatActivity {
                 intent.putExtra("result", totalTimeSpent);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                Meditation.this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
     }
